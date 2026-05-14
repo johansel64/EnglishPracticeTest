@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English Practice Lab</title>
+    <link rel="stylesheet" href="css/themes.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/components.css">
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <div>
+                <h1>English Practice Lab</h1>
+                <p>Learn, practice, and master English</p>
+            </div>
+            <div class="header-actions">
+                <button class="icon-btn" id="themeToggle" title="Toggle theme">🌙</button>
+            </div>
+        </header>
+
+        <main class="app-content">
+
+<section id="screen-dashboard" class="screen active">
+    <h2 style="margin-bottom:4px;">Welcome! 👋</h2>
+    <p style="color:var(--text-secondary);margin-bottom:16px;">Choose a mode to start practicing.</p>
+    <div id="dashStats" class="stats-bar"></div>
+    <div class="dashboard-grid">
+        <div class="card card-clickable feature-card" id="btnFullTest"><div class="card-icon">📝</div><div class="card-header">Full Test</div><div class="card-body">20 random questions, timed. All topics.</div></div>
+        <div class="card card-clickable feature-card" id="btnPractice"><div class="card-icon">🎯</div><div class="card-header">Practice by Topic</div><div class="card-body">Choose topic and difficulty. Feedback.</div></div>
+        <div class="card card-clickable feature-card" id="btnFlashcards"><div class="card-icon">🃏</div><div class="card-header">Flashcards</div><div class="card-body">Vocabulary with pronunciation.</div></div>
+        <div class="card card-clickable feature-card" id="btnStudyGuide"><div class="card-icon">📖</div><div class="card-header">Study Guide</div><div class="card-body">Grammar rules and tables.</div></div>
+        <div class="card card-clickable feature-card" id="btnStats"><div class="card-icon">📊</div><div class="card-header">My Progress</div><div class="card-body">Test history, scores, streak.</div></div>
+        <div class="card card-clickable feature-card" id="btnEditor"><div class="card-icon">✏️</div><div class="card-header">Custom Questions</div><div class="card-body">Add your own questions.</div></div>
+        <div class="card card-clickable feature-card" id="btnVocabQuiz"><div class="card-icon">🌐</div><div class="card-header">Vocabulary Quiz</div><div class="card-body">Dynamic questions from APIs.</div></div>
+    </div>
+</section>
+
+<section id="screen-study" class="screen">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:8px;">
+        <h2 style="color:var(--text-primary);">📖 Study Guide</h2>
+        <button class="btn btn-ghost btn-sm btn-back">← Back</button>
+    </div>
+    <div class="guide-tabs" id="guideTabs"></div>
+    <div class="guide-section active" id="guideContent"></div>
+</section>
+
+<section id="screen-test" class="screen">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px;">
+        <div><h2 id="testTitle" style="color:var(--text-primary);">Full Test</h2><p id="testSubtitle" style="color:var(--text-muted);font-size:0.85rem;">20 questions</p></div>
+        <button class="btn btn-ghost btn-sm btn-back">✕ Exit</button>
+    </div>
+    <div id="timerRow" style="display:none;margin-bottom:8px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+            <span style="font-size:0.8rem;color:var(--text-muted);" id="pgLabel">0 / 20</span>
+            <span class="timer-display" id="timerDisplay">--:--</span>
+        </div>
+        <div class="progress-bar"><div class="progress-fill" id="pgFill" style="width:0%;"></div></div>
+    </div>
+    <div id="questionArea"></div>
+    <div class="nav-row">
+        <button class="btn btn-secondary" id="btnTestPrev">← Previous</button>
+        <button class="btn btn-primary" id="btnTestNext">Next →</button>
+        <button class="btn btn-primary" id="btnTestSubmit" style="display:none;">Submit Test ✓</button>
+    </div>
+    <p style="text-align:center;color:var(--text-muted);font-size:0.7rem;margin-top:10px;">Keyboard: ← → | 1-4 for options | Esc to exit</p>
+</section>
+
+<section id="screen-practice" class="screen">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px;">
+        <h2 id="pracTitle" style="color:var(--text-primary);">Practice Mode</h2>
+        <button class="btn btn-ghost btn-sm btn-back">✕ Exit</button>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="pgFillPrac" style="width:0%;"></div></div>
+    <span style="font-size:0.8rem;color:var(--text-muted);" id="pgLabelPrac">0 / 0</span>
+    <div id="questionAreaPrac"></div>
+    <div class="nav-row">
+        <button class="btn btn-secondary" id="btnPracPrev">← Previous</button>
+        <button class="btn btn-outline" id="btnPracCheck">Check Answer</button>
+        <button class="btn btn-primary" id="btnPracNext">Next →</button>
+        <button class="btn btn-primary" id="btnPracFinish" style="display:none;">Finish</button>
+    </div>
+</section>
+
+<section id="screen-flashcards" class="screen">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:8px;">
+        <h2 style="color:var(--text-primary);">🃏 Flashcards</h2>
+        <button class="btn btn-ghost btn-sm btn-back">← Back</button>
+    </div>
+    <p style="text-align:center;color:var(--text-muted);margin-bottom:8px;font-size:0.85rem;" id="flashcardCount">1 / 30</p>
+    <div class="flashcard-container" id="flashcardWrap"><div class="flashcard" style="display:flex;align-items:center;justify-content:center;color:var(--text-muted);">Loading flashcards...</div></div>
+    <div style="display:flex;justify-content:center;gap:12px;margin-top:20px;">
+        <button class="btn btn-secondary" id="btnFcPrev">← Previous</button>
+        <button class="btn btn-outline" id="btnFcSpeak">🔊 Listen</button>
+        <button class="btn btn-primary" id="btnFcNext">Next →</button>
+    </div>
+    <p style="text-align:center;color:var(--text-muted);font-size:0.7rem;margin-top:10px;">Click to flip · Spacebar · ← → · S to listen</p>
+</section>
+
+<section id="screen-results" class="screen">
+    <div style="text-align:center;">
+        <div style="font-size:3rem;margin-bottom:8px;">🎯</div>
+        <div class="results-score" id="resultScore">0 / 20</div>
+        <div style="font-size:1.5rem;font-weight:700;color:var(--text-primary);" id="resultPct">0%</div>
+        <div class="results-message" id="resultMsg">Great job!</div>
+        <div style="display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-bottom:20px;">
+            <button class="btn btn-primary" id="btnRetry">🔄 Try Again</button>
+            <button class="btn btn-outline" id="btnReviewErrors" style="display:none;">🔍 Review Errors</button>
+            <button class="btn btn-secondary" id="btnHome">🏠 Home</button>
+        </div>
+    </div>
+    <div class="results-review" id="reviewArea"></div>
+</section>
+
+<section id="screen-stats" class="screen">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:8px;">
+        <h2 style="color:var(--text-primary);">📊 My Progress</h2>
+        <button class="btn btn-ghost btn-sm btn-back">← Back</button>
+    </div>
+    <div id="dashStats2" class="stats-bar"></div>
+    <div id="statsHistory" style="margin-top:16px;"></div>
+    <div style="text-align:center;margin-top:20px;">
+        <button class="btn btn-ghost btn-sm" id="btnClearHistory" style="color:var(--color-error);">Clear History</button>
+    </div>
+</section>
+
+<section id="screen-editor" class="screen">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:8px;">
+        <h2 style="color:var(--text-primary);">✏️ Custom Questions</h2>
+        <button class="btn btn-ghost btn-sm btn-back">← Back</button>
+    </div>
+    <div class="editor-form">
+        <div class="form-group"><label>Question Type</label><select class="select" id="eqType"><option value="multiple">Multiple Choice</option><option value="fill">Fill in the Blank</option><option value="matching">Matching</option><option value="reorder">Sentence Reorder</option><option value="error">Error Correction</option><option value="listening">Listening</option></select></div>
+        <div class="form-group"><label>Topic</label><select class="select" id="eqTopic"><option value="present-progressive">Present Progressive</option><option value="simple-present">Simple Present</option><option value="was-were">Was/Were</option><option value="countable">Countable/Uncountable</option><option value="vocabulary">Vocabulary</option><option value="past-simple">Past Simple</option><option value="will-going">Will vs Be Going To</option><option value="comparatives">Comparatives</option><option value="prepositions">Prepositions</option><option value="modals">Modal Verbs</option><option value="present-perfect">Present Perfect</option><option value="conditionals">Conditionals</option></select></div>
+        <div class="form-group"><label>Difficulty</label><select class="select" id="eqDifficulty"><option value="beginner">Beginner</option><option value="intermediate">Intermediate</option><option value="advanced">Advanced</option></select></div>
+        <div class="form-group"><label>Question</label><textarea class="input" id="eqQuestion" rows="3" placeholder="Enter the question prompt..."></textarea></div>
+        <div id="eqExtra" style="display:none;"></div>
+        <div class="form-group"><label>Answer</label><input type="text" class="input" id="eqAnswer" placeholder="Correct answer"></div>
+        <button class="btn btn-primary btn-block" id="btnSaveQuestion">Save Question</button>
+    </div>
+    <h3 style="margin-top:24px;margin-bottom:12px;color:var(--text-secondary);">Your Questions</h3>
+    <div id="editorQuestionList"></div>
+</section>
+
+<section id="screen-vocabquiz" class="screen">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:8px;">
+        <h2 style="color:var(--text-primary);">🌐 Vocabulary Quiz</h2>
+        <button class="btn btn-ghost btn-sm btn-back">← Back</button>
+    </div>
+    <p style="text-align:center;color:var(--text-muted);margin-bottom:8px;">Score: <strong id="vqScore">0 / 0</strong></p>
+    <div id="vqArea"><div class="empty-state"><div class="icon">🌐</div><h3>Online Vocabulary</h3><p>Questions generated from dictionary APIs.</p></div></div>
+</section>
+
+        </main>
+        <footer class="app-footer">English Practice Lab &copy; 2026 · Built for learning</footer>
+    </div>
+
+    <div class="toast-container" id="toastContainer"></div>
+
+    <div id="configModal" class="modal-overlay" style="display:none;">
+        <div class="modal">
+            <h2>Configure Your Session</h2>
+            <div class="form-group"><label>Mode</label><select class="select" id="configMode"><option value="test">Timed Test</option><option value="practice">Practice (with feedback)</option></select></div>
+            <div class="form-group"><label>Topic (optional)</label><select class="select" id="configTopic"><option value="">All Topics</option></select></div>
+            <p style="font-size:0.7rem;color:var(--text-muted);margin-top:2px;">If you select a topic, questions will be filtered accordingly.</p>
+            <div class="form-group"><label>Difficulty</label><select class="select" id="configDiff"><option value="all">All Levels</option><option value="beginner">Beginner</option><option value="intermediate">Intermediate</option><option value="advanced">Advanced</option></select></div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="document.getElementById('configModal').style.display='none';">Cancel</button>
+                <button class="btn btn-primary" id="btnStartConfigured">Start</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/data.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/features.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/app.js"></script>
+    <script>App.init();</script>
+</body>
+</html>
